@@ -144,9 +144,12 @@ export default function AnniversaryCard() {
           transition={{ duration: 0.8 }}
           style={styles.message}
         >
-          Every moment with you is my favorite memory. 💕 You make my world
-          brighter, my days happier, and my heart fuller. Here’s to us, forever
-          and always ✨
+          Dear Amora🩷,
+          <br />
+          You might think I don't say it enough, but I want you to know how
+          deeply I cherish you. Happy Anniversary, my baby boo🩷! 🩷🎄Every moment
+          with you is my favorite memory. 💕 You make my world brighter, my days
+          happier, and my heart fuller (if that is a word Idk). Here's to us, forever and always 🎄🩷
         </motion.p>
       )}
 
@@ -204,7 +207,12 @@ const styles = {
     alignItems: "center",
     justifyContent: "center",
   },
-  image: { position: "absolute", width: "100%", height: "100%", objectFit: "cover" },
+  image: {
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+    objectFit: "cover",
+  },
   button: {
     marginTop: "30px",
     padding: "15px 40px",
@@ -225,7 +233,8 @@ const styles = {
     left: "-75%",
     width: "50%",
     height: "100%",
-    background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent)",
+    background:
+      "linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent)",
     transform: "skewX(-20deg)",
   },
   message: {
