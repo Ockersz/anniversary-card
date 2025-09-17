@@ -9,6 +9,8 @@ export default defineConfig({
     allowedHosts: [
       "anni-app-krkoi.ondigitalocean.app",
       "anni-app-*.ondigitalocean.app",
+      "www.ockersz.me",
+      "ockersz.me",
     ],
   },
 });
