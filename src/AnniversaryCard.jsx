@@ -16,12 +16,12 @@ const photos = [
 export default function AnniversaryCard() {
   const [showMessage, setShowMessage] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isMuted, setIsMuted] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
 
   const audioRef = useRef(null);
 
+  // Slideshow rotation
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % photos.length);
@@ -29,7 +29,7 @@ export default function AnniversaryCard() {
     return () => clearInterval(interval);
   }, []);
 
-  // Update progress
+  // Update progress bar
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -42,23 +42,19 @@ export default function AnniversaryCard() {
     return () => audio.removeEventListener("timeupdate", update);
   }, []);
 
+  // Toggle play / pause
   const togglePlay = () => {
-    if (!audioRef.current) return;
+    const audio = audioRef.current;
+    if (!audio) return;
 
     if (isPlaying) {
-      audioRef.current.pause();
+      audio.pause();
       setIsPlaying(false);
     } else {
-      audioRef.current.muted = false; // make sure it's unmuted
-      audioRef.current
+      audio
         .play()
-        .then(() => {
-          setIsPlaying(true);
-          setIsMuted(false);
-        })
-        .catch((e) => {
-          console.log("Mobile autoplay blocked:", e);
-        });
+        .then(() => setIsPlaying(true))
+        .catch((e) => console.log("Autoplay blocked until tap:", e));
     }
   };
 
@@ -89,6 +85,7 @@ export default function AnniversaryCard() {
         💖 <span className="sparkle-text">Happy Anniversary Baby Boo</span> 💖
       </motion.h1>
 
+      {/* CSS animations */}
       <style>
         {`
           @keyframes sparkle {
@@ -105,14 +102,8 @@ export default function AnniversaryCard() {
             animation: sparkle 4s linear infinite;
             text-shadow: 0 0 20px rgba(236,72,153,0.6), 0 0 40px rgba(168,85,247,0.4);
           }
-
           @keyframes shine { 0% { left: -75%; } 100% { left: 125%; } }
           .shine { animation: shine 2s infinite; }
-
-          @keyframes pulse {
-            0%, 100% { transform: scale(1); box-shadow: 0 0 10px #ec4899; }
-            50% { transform: scale(1.1); box-shadow: 0 0 20px #f472b6; }
-          }
         `}
       </style>
 
@@ -159,7 +150,7 @@ export default function AnniversaryCard() {
         </motion.p>
       )}
 
-      {/* Custom Music Player */}
+      {/* Music Player */}
       <div style={styles.player}>
         <button onClick={togglePlay} style={styles.playButton}>
           {isPlaying ? "⏸ Pause" : "▶ Play"}
@@ -170,7 +161,7 @@ export default function AnniversaryCard() {
       </div>
 
       {/* Background Music */}
-      <audio ref={audioRef} src="https://docs.google.com/uc?export=download&id=1FDxP8PKe_lf_3LRJ9iL6RMYCtLuFc857" loop preload="auto" />
+      <audio ref={audioRef} src="/videoplayback.mp3" loop preload="auto" />
     </div>
   );
 }
@@ -195,15 +186,8 @@ const styles = {
     overflow: "hidden",
     pointerEvents: "none",
   },
-  heart: {
-    position: "absolute",
-    opacity: 0.4,
-  },
-  title: {
-    fontSize: "2.5rem",
-    fontWeight: "bold",
-    margin: "20px 0",
-  },
+  heart: { position: "absolute", opacity: 0.4 },
+  title: { fontSize: "2.5rem", fontWeight: "bold", margin: "20px 0" },
   slideshow: {
     marginTop: "20px",
     width: "90%",
@@ -220,12 +204,7 @@ const styles = {
     alignItems: "center",
     justifyContent: "center",
   },
-  image: {
-    position: "absolute",
-    width: "100%",
-    height: "100%",
-    objectFit: "cover",
-  },
+  image: { position: "absolute", width: "100%", height: "100%", objectFit: "cover" },
   button: {
     marginTop: "30px",
     padding: "15px 40px",
@@ -246,8 +225,7 @@ const styles = {
     left: "-75%",
     width: "50%",
     height: "100%",
-    background:
-      "linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent)",
+    background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent)",
     transform: "skewX(-20deg)",
   },
   message: {
@@ -257,21 +235,6 @@ const styles = {
     lineHeight: "1.6",
     color: "#fbcfe8",
     textShadow: "0 0 15px rgba(236,72,153,0.5)",
-  },
-  muteButton: {
-    position: "fixed",
-    bottom: "20px",
-    right: "20px",
-    padding: "12px 20px",
-    fontSize: "1rem",
-    fontWeight: "bold",
-    color: "#fff",
-    background: "linear-gradient(90deg, #ec4899, #f472b6)",
-    border: "none",
-    borderRadius: "30px",
-    cursor: "pointer",
-    animation: "pulse 1.5s infinite",
-    zIndex: 1000,
   },
   player: {
     marginTop: "25px",
